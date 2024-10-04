@@ -20,12 +20,34 @@ enum Role {
 
 model User {
   id                      String @id @default(cuid())
-  username                String @unique
+  name                    String @unique
   email                   String @unique
-  avatar                  String? @unique
-  location                String
   password                String 
-  role                    Role? @default(BUYER)
-  business_description    String
+  role                    Role @default(BUYER)
   created_at              DateTime @default(now())
+  
+  profile                 Profile?
+  addresses               Addresses[]
+}
+
+model Profile {
+  id                      String 
+  user_id                 String @unique
+  business_description    String?
+  avatar                  String?
+  
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Addresses {
+  id                      String @id @default(cuid())
+  user_id                 String
+  street                  String
+  city                    String
+  state                   String
+  neighborhood            String
+  postal_code             Int
+  house_number            Int
+
+  user User @relation(fields: [user_id], references: [id])
 }

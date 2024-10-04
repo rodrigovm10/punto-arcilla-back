@@ -2,7 +2,7 @@ import { AuthDataSource, CustomError, RegisterUserDto, User } from '../../domain
 
 export class AuthDataSourceImpl implements AuthDataSource {
   async register(registerUserDto: RegisterUserDto): Promise<User> {
-    const { username, email, password } = registerUserDto
+    const { name, email, password, role } = registerUserDto
 
     try {
       // 1. Verify if email exists
@@ -11,7 +11,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
       // 3. Map response to our entity
 
-      return new User('1', username, email, password, 'BUYER')
+      return new User('1', name, email, password, role)
     } catch (error) {
       if (error instanceof CustomError) {
         throw error
