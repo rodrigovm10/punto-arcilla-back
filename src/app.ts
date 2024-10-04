@@ -1,3 +1,4 @@
+import { envs } from './config'
 import { PostgresDatabase } from './data/postgresql/postgres-database'
 import { AppRoutes } from './presentation/routes'
 import { Server } from './presentation/server'
@@ -7,5 +8,5 @@ import { Server } from './presentation/server'
 
 async function main() {
   await PostgresDatabase.connect()
-  new Server({ port: Number(process.env.PORT), routes: AppRoutes.routes }).start()
+  new Server({ port: Number(envs.PORT), routes: AppRoutes.routes }).start()
 }

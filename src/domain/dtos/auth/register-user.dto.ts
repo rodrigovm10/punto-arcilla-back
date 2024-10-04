@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import { Validators } from '../../../config'
 
 export class RegisterUserDto {
@@ -5,7 +6,7 @@ export class RegisterUserDto {
     public name: string,
     public email: string,
     public password: string,
-    public role: string
+    public role: Role
   ) {}
 
   static create(object: { [key: string]: any }): [string?, RegisterUserDto?] {
