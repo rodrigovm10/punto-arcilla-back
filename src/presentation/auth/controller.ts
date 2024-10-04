@@ -1,5 +1,12 @@
 import { Request, Response } from 'express'
-import { AuthRepository, CustomError, RegisterUser, RegisterUserDto } from '../../domain'
+import {
+  AuthRepository,
+  CustomError,
+  LoginUserDto,
+  RegisterUser,
+  RegisterUserDto,
+  LoginUser
+} from '../../domain'
 import { JwtAdapter } from '../../config'
 import { prisma } from '../../data/postgresql/postgres-database'
 
@@ -27,7 +34,14 @@ export class AuthController {
   }
 
   loginUser = (req: Request, res: Response) => {
-    res.json('loginUser controller')
+    const [error, loginUserDto] = LoginUserDto.create(req.body)
+
+    if (error) return res.status(400).json({ error })
+
+    new LoginUser(this.authRepository)
+      .execute(loginUserDto!)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
   }
 
   getUsers = (req: Request, res: Response) => {
