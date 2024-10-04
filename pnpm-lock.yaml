@@ -1266,8 +1266,10 @@ snapshots:
 
   'punto-arcilla-back@file:':
     dependencies:
+      '@prisma/client': 5.20.0(prisma@5.20.0)
       cors: 2.8.5
       express: 4.21.0
+      prisma: 5.20.0
     transitivePeerDependencies:
       - supports-color
 
