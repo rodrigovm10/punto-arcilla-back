@@ -7,7 +7,6 @@ import {
   RegisterUserDto,
   LoginUser
 } from '../../domain'
-import { JwtAdapter } from '../../config'
 import { prisma } from '../../data/postgresql/postgres-database'
 
 export class AuthController {

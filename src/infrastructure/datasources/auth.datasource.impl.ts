@@ -1,6 +1,8 @@
 import { BcryptAdapter } from '../../config'
 import { prisma } from '../../data/postgresql/postgres-database'
 import { AuthDataSource, CustomError, LoginUserDto, RegisterUserDto, User } from '../../domain'
+import { BadRequestException } from '../../domain/errors/bad-request'
+import { ErrorCode } from '../../domain/errors/root'
 import { UserMapper } from '../mappers/user.mapper'
 
 type HashFunction = (password: string) => string
@@ -22,7 +24,8 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (exists) throw CustomError.badRequest('User already exist')
+      if (exists)
+        throw new BadRequestException('User already exists', ErrorCode.USER_ALREADY_EXISTS)
 
       // 2. Hash password
       const hashedPassword = this.hashPassword(password)
@@ -43,7 +46,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
         throw error
       }
 
-      throw CustomError.internalServer()
+      throw CustomError.internalServer('JE')
     }
   }
 
