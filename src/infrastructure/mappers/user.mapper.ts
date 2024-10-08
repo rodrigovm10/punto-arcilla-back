@@ -1,4 +1,4 @@
-import { BadRequestException, CustomError, ErrorCode } from '@domain/errors'
+import { BadRequestException, ErrorCode } from '@domain/errors'
 import { User } from '@domain/entities'
 
 export class UserMapper {
