@@ -1,8 +1,7 @@
 import { Router } from 'express'
-import { AuthController } from './controller'
-import { AuthDataSourceImpl, AuthRepositoryImpl } from '../../infrastructure'
-import { AuthMiddleware } from '../middlewares/auth.middleware'
-import { ErrorMiddleware } from '../middlewares/error.middleware'
+import { AuthMiddleware } from '@presentation/middlewares'
+import { AuthController } from '@presentation/auth/controller'
+import { AuthDataSourceImpl, AuthRepositoryImpl } from '@infrastructure/index'
 
 export class AuthRoutes {
   static get routes(): Router {

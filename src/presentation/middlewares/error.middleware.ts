@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { ErrorCode, HttpException } from '../../domain/errors/root'
-import { InternalException } from '../../domain/errors/internal-exception'
+import { ErrorCode, HttpException, InternalException } from '@domain/errors'
 
 export class ErrorMiddleware {
   static error = (error: HttpException | any, req: Request, res: Response, next: NextFunction) => {

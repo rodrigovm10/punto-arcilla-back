@@ -1,15 +1,11 @@
-import { prisma } from '../../data/postgresql/postgres-database'
-
 import { NextFunction, Request, Response } from 'express'
-import {
-  AuthRepository,
-  LoginUserDto,
-  RegisterUser,
-  RegisterUserDto,
-  LoginUser
-} from '../../domain'
-import { ErrorCode, HttpException } from '../../domain/errors/root'
-import { UnprocessableEntity } from '../../domain/errors/validation'
+
+import { prisma } from '@data/postgresql/postgres-database'
+
+import { AuthRepository } from '@domain/repositories'
+import { RegisterUser, LoginUser } from '@domain/use-cases'
+import { LoginUserDto, RegisterUserDto } from '@domain/dtos'
+import { ErrorCode, UnprocessableEntity } from '@domain/errors'
 
 export class AuthController {
   constructor(private readonly authRepository: AuthRepository) {}

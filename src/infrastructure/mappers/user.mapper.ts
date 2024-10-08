@@ -1,4 +1,5 @@
-import { CustomError, User } from '../../domain'
+import { CustomError } from '@domain/errors'
+import { User } from '@domain/entities'
 
 export class UserMapper {
   static userEntityFromObject(object: { [key: string]: any }) {

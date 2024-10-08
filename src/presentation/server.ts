@@ -1,5 +1,5 @@
 import express, { Router, json, urlencoded } from 'express'
-import { ErrorMiddleware } from './middlewares/error.middleware'
+import { ErrorMiddleware } from '@presentation/middlewares'
 
 interface Options {
   port?: number
