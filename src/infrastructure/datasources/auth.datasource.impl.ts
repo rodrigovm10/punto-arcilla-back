@@ -2,7 +2,8 @@ import { BcryptAdapter } from '../../config'
 import { prisma } from '../../data/postgresql/postgres-database'
 import { AuthDataSource, CustomError, LoginUserDto, RegisterUserDto, User } from '../../domain'
 import { BadRequestException } from '../../domain/errors/bad-request'
-import { ErrorCode } from '../../domain/errors/root'
+import { NotFoundException } from '../../domain/errors/not-found'
+import { ErrorCode, HttpException } from '../../domain/errors/root'
 import { UserMapper } from '../mappers/user.mapper'
 
 type HashFunction = (password: string) => string
@@ -42,11 +43,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
       // 3. Map response to our entity
       return UserMapper.userEntityFromObject(user)
     } catch (error) {
-      if (error instanceof CustomError) {
-        throw error
-      }
-
-      throw CustomError.internalServer('JE')
+      throw error
     }
   }
 
@@ -61,20 +58,20 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (!dbUser) throw CustomError.badRequest('Email or password is wrong')
+      if (!dbUser) throw new NotFoundException('User not found', ErrorCode.USER_NOT_FOUND)
 
       const passwordCorrect = this.comparePassword(password, dbUser?.password)
 
-      if (!passwordCorrect) throw CustomError.badRequest('Email or password is wrong')
+      if (!passwordCorrect)
+        throw new BadRequestException(
+          'Email or password is wrong',
+          ErrorCode.EMAIL_OR_PASSWORD_INCORRECT
+        )
 
       // Get user
       return UserMapper.userEntityFromObject(dbUser)
     } catch (error) {
-      if (error instanceof CustomError) {
-        throw error
-      }
-
-      throw CustomError.internalServer()
+      throw error
     }
   }
 }

@@ -1,54 +1,47 @@
-import { Request, Response } from 'express'
+import { prisma } from '../../data/postgresql/postgres-database'
+
+import { NextFunction, Request, Response } from 'express'
 import {
   AuthRepository,
-  CustomError,
   LoginUserDto,
   RegisterUser,
   RegisterUserDto,
   LoginUser
 } from '../../domain'
-import { prisma } from '../../data/postgresql/postgres-database'
+import { ErrorCode, HttpException } from '../../domain/errors/root'
+import { UnprocessableEntity } from '../../domain/errors/validation'
 
 export class AuthController {
-  // DI - Dependency Injection
   constructor(private readonly authRepository: AuthRepository) {}
 
-  private handleError = (error: unknown, res: Response) => {
-    if (error instanceof CustomError) {
-      return res.status(error.statusCode).json({ error: error.message })
-    }
-
-    console.log(error) // Winston
-    return res.status(500).json({ error: 'Internal Server Error' })
-  }
-
-  registerUser = (req: Request, res: Response) => {
+  registerUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, registerUserDto] = RegisterUserDto.create(req.body)
-    if (error) return res.status(400).json({ error })
+    if (error)
+      next(new UnprocessableEntity(error, 'Unprocessable entity', ErrorCode.UNPROCESSABLE_ENTITY))
 
     new RegisterUser(this.authRepository)
       .execute(registerUserDto!)
       .then(data => res.json(data))
-      .catch(error => this.handleError(error, res))
+      .catch(error => next(error)) // Usa next para pasar el error al middleware
   }
 
-  loginUser = (req: Request, res: Response) => {
+  loginUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, loginUserDto] = LoginUserDto.create(req.body)
-
-    if (error) return res.status(400).json({ error })
+    if (error)
+      next(new UnprocessableEntity(error, 'Unprocessable entity', ErrorCode.UNPROCESSABLE_ENTITY))
 
     new LoginUser(this.authRepository)
       .execute(loginUserDto!)
       .then(data => res.json(data))
-      .catch(error => this.handleError(error, res))
+      .catch(error => next(error)) // Usa next para pasar el error al middleware
   }
 
-  getUsers = (req: Request, res: Response) => {
+  getUsers = (req: Request, res: Response, next: NextFunction) => {
     prisma.user
       .findMany()
       .then(users => {
-        res.json({ user: req.body.user })
+        res.json({ users })
       })
-      .catch(() => res.status(500).json({ error: 'Internal Server Error' }))
+      .catch(error => next(error)) // Usa next para pasar el error al middleware
   }
 }

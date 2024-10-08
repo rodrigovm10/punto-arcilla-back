@@ -1,6 +1,8 @@
 import { JwtAdapter } from '../../../config'
 import { LoginUserDto } from '../../dtos/auth/login-user.dto'
 import { CustomError } from '../../errors/custom.error'
+import { InternalException } from '../../errors/internal-exception'
+import { ErrorCode } from '../../errors/root'
 import { AuthRepository } from '../../repositories/auth.repository'
 
 interface UserToken {
@@ -30,7 +32,12 @@ export class LoginUser implements LoginUserUseCase {
     // Token
     const token = await this.signToken({ id: user.id })
 
-    if (!token) throw CustomError.internalServer('Error generating token')
+    if (!token)
+      throw new InternalException(
+        'Internal Server Error',
+        'Error generating token',
+        ErrorCode.INTERNAL_EXCEPTION
+      )
 
     return {
       token: token,
