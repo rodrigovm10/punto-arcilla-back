@@ -53,4 +53,24 @@ export class ProductDataSourceImpl implements ProductDataSource {
       throw CustomError.internalServer()
     }
   }
+
+  async findById(id: string): Promise<ProductEntity> {
+    try {
+      const product = await prisma.product.findFirst({
+        where: {
+          id
+        }
+      })
+
+      if (!product) {
+        throw CustomError.notFound('Product not found')
+      }
+
+      return ProductMapper.productEntityFromObject(product)
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+
+      throw CustomError.internalServer()
+    }
+  }
 }

@@ -13,4 +13,8 @@ export class ProductRepositoryImpl implements ProductRepository {
   findAll(): Promise<ProductEntity[]> {
     return this.productDatasource.findAll()
   }
+
+  findById(id: string): Promise<ProductEntity> {
+    return this.productDatasource.findById(id)
+  }
 }

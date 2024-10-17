@@ -5,4 +5,6 @@ export abstract class ProductDataSource {
   abstract create(productDto: CreateProductDto): Promise<ProductEntity>
 
   abstract findAll(): Promise<ProductEntity[]>
+
+  abstract findById(id: string): Promise<ProductEntity>
 }
