@@ -17,4 +17,8 @@ export class ProductRepositoryImpl implements ProductRepository {
   findById(id: string): Promise<ProductEntity> {
     return this.productDatasource.findById(id)
   }
+
+  delete(id: string): Promise<string> {
+    return this.productDatasource.delete(id)
+  }
 }

@@ -7,4 +7,6 @@ export abstract class ProductDataSource {
   abstract findAll(): Promise<ProductEntity[]>
 
   abstract findById(id: string): Promise<ProductEntity>
+
+  abstract delete(id: string): Promise<string>
 }

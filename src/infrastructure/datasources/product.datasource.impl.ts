@@ -62,15 +62,29 @@ export class ProductDataSourceImpl implements ProductDataSource {
         }
       })
 
-      if (!product) {
-        throw CustomError.notFound('Product not found')
-      }
+      if (!product) throw CustomError.notFound('Product not found')
 
       return ProductMapper.productEntityFromObject(product)
     } catch (error) {
       if (error instanceof CustomError) throw error
 
       throw CustomError.internalServer()
+    }
+  }
+
+  async delete(id: string): Promise<string> {
+    try {
+      const productExists = await prisma.product.findFirst({ where: { id } })
+
+      if (!productExists) throw CustomError.notFound('Product not found')
+
+      await prisma.product.delete({ where: { id } })
+
+      return 'Product deleted succesfully'
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+      console.log(error)
+      throw error
     }
   }
 }
