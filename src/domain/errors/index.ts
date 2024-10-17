@@ -1,6 +1,1 @@
-export * from '@domain/errors/not-found'
-export * from '@domain/errors/root'
-export * from '@domain/errors/validation'
-export * from '@domain/errors/bad-request'
-export * from '@domain/errors/internal-exception'
-export * from '@domain/errors/no-content'
+export * from '@domain/errors/custom-error'

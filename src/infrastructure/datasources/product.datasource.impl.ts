@@ -1,8 +1,8 @@
-import { prisma } from '@data/postgresql/postgres-database'
-import { ProductDataSource } from '@domain/datasources'
+import { CustomError } from '@domain/errors'
 import { CreateProductDto } from '@domain/dtos'
 import { ProductEntity } from '@domain/entities'
-import { BadRequestException, ErrorCode, NoContentException } from '@domain/errors'
+import { ProductDataSource } from '@domain/datasources'
+import { prisma } from '@data/postgresql/postgres-database'
 import { ProductMapper } from '@infrastructure/mappers/product.mapper'
 
 export class ProductDataSourceImpl implements ProductDataSource {
@@ -18,7 +18,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
       })
 
       // 2. Verify if user_id does not  exists
-      if (!user) throw new BadRequestException('User not found', ErrorCode.USER_NOT_FOUND)
+      if (!user) throw CustomError.notFound('User not found')
 
       // 3. Create product
       const product = await prisma.product.create({
@@ -36,7 +36,9 @@ export class ProductDataSourceImpl implements ProductDataSource {
 
       return ProductMapper.productEntityFromObject(product)
     } catch (error) {
-      throw error
+      if (error instanceof CustomError) throw error
+
+      throw CustomError.internalServer()
     }
   }
 
@@ -46,7 +48,9 @@ export class ProductDataSourceImpl implements ProductDataSource {
 
       return products.map(product => ProductMapper.productEntityFromObject(product))
     } catch (error) {
-      throw error
+      if (error instanceof CustomError) throw error
+
+      throw CustomError.internalServer()
     }
   }
 }

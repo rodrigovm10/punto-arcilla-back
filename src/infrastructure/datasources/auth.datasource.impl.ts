@@ -5,7 +5,7 @@ import { prisma } from '@data/postgresql/postgres-database'
 import { UserEntity } from '@domain/entities'
 import { AuthDataSource } from '@domain/datasources'
 import { LoginUserDto, RegisterUserDto } from '@domain/dtos'
-import { BadRequestException, NotFoundException, ErrorCode } from 'domain/errors'
+import { CustomError } from 'domain/errors'
 
 type HashFunction = (password: string) => string
 type CompareFunction = (password: string, hashed: string) => boolean
@@ -26,8 +26,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (exists)
-        throw new BadRequestException('User already exists', ErrorCode.USER_ALREADY_EXISTS)
+      if (exists) throw CustomError.badRequest('User already exists')
 
       // 2. Hash password
       const hashedPassword = this.hashPassword(password)
@@ -45,7 +44,9 @@ export class AuthDataSourceImpl implements AuthDataSource {
       // 3. Map response to our entity
       return UserMapper.userEntityFromObject(user)
     } catch (error) {
-      throw error
+      if (error instanceof CustomError) throw error
+
+      throw CustomError.internalServer()
     }
   }
 
@@ -60,20 +61,18 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (!dbUser) throw new NotFoundException('User not found', ErrorCode.USER_NOT_FOUND)
+      if (!dbUser) throw CustomError.badRequest('User not found')
 
       const passwordCorrect = this.comparePassword(password, dbUser?.password)
 
-      if (!passwordCorrect)
-        throw new BadRequestException(
-          'Email or password is wrong',
-          ErrorCode.EMAIL_OR_PASSWORD_INCORRECT
-        )
+      if (!passwordCorrect) throw CustomError.badRequest('Email or password is wrong')
 
       // Get user
       return UserMapper.userEntityFromObject(dbUser)
     } catch (error) {
-      throw error
+      if (error instanceof CustomError) throw error
+
+      throw CustomError.internalServer()
     }
   }
 }

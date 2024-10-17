@@ -1,5 +1,4 @@
 import express, { Router, json, urlencoded } from 'express'
-import { ErrorMiddleware } from '@presentation/middlewares'
 
 interface Options {
   port?: number
@@ -25,8 +24,6 @@ export class Server {
 
     // Usar rutas
     this.app.use(this.routes)
-
-    this.app.use(ErrorMiddleware.error)
 
     this.app.listen(this.port, () => {
       console.log(`Server running on port ${this.port}`)
