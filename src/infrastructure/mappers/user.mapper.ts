@@ -1,5 +1,5 @@
 import { BadRequestException, ErrorCode } from '@domain/errors'
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 
 export class UserMapper {
   static userEntityFromObject(object: { [key: string]: any }) {
@@ -10,6 +10,6 @@ export class UserMapper {
     if (!password) throw new BadRequestException('Missing password', ErrorCode.MISSING_FIELD)
     if (!role) throw new BadRequestException('Missing role', ErrorCode.MISSING_FIELD)
 
-    return new User(id, name, email, password, role)
+    return new UserEntity(id, name, email, password, role)
   }
 }

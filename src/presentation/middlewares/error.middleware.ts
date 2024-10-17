@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { ErrorCode, HttpException, InternalException } from '@domain/errors'
 
 export class ErrorMiddleware {
-  static error = (error: HttpException | any, req: Request, res: Response, next: NextFunction) => {
+  static error = (error: HttpException | any, req: Request, res: Response) => {
     const statusCode = error.statusCode // Código de estado por defecto (500)
 
     // Verifica si es una instancia de HttpException

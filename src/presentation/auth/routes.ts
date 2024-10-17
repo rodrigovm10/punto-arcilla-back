@@ -1,4 +1,5 @@
 import { Router } from 'express'
+
 import { AuthMiddleware } from '@presentation/middlewares'
 import { AuthController } from '@presentation/auth/controller'
 import { AuthDataSourceImpl, AuthRepositoryImpl } from '@infrastructure/index'

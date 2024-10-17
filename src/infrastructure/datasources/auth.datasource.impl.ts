@@ -2,7 +2,7 @@ import { BcryptAdapter } from '@config/index'
 import { UserMapper } from '@infrastructure/mappers'
 import { prisma } from '@data/postgresql/postgres-database'
 
-import { User } from '@domain/entities'
+import { UserEntity } from '@domain/entities'
 import { AuthDataSource } from '@domain/datasources'
 import { LoginUserDto, RegisterUserDto } from '@domain/dtos'
 import { BadRequestException, NotFoundException, ErrorCode } from 'domain/errors'
@@ -15,7 +15,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
     private readonly comparePassword: CompareFunction = BcryptAdapter.compare
   ) {}
 
-  async register(registerUserDto: RegisterUserDto): Promise<User> {
+  async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
     const { name, email, password, role } = registerUserDto
 
     try {
@@ -32,6 +32,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
       // 2. Hash password
       const hashedPassword = this.hashPassword(password)
 
+      // 3. Create User
       const user = await prisma.user.create({
         data: {
           name,
@@ -48,7 +49,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<User> {
+  async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
     const { email, password } = loginUserDto
 
     try {
