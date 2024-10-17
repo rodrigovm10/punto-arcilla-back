@@ -1,7 +1,7 @@
-import { JwtAdapter } from '../../../config'
-import { LoginUserDto } from '../../dtos/auth/login-user.dto'
-import { CustomError } from '../../errors/custom.error'
-import { AuthRepository } from '../../repositories/auth.repository'
+import { JwtAdapter } from '@config/index'
+import { LoginUserDto } from '@domain/dtos'
+import { CustomError } from '@domain/errors'
+import { AuthRepository } from '@domain/repositories'
 
 interface UserToken {
   token: string
@@ -13,7 +13,7 @@ interface UserToken {
 }
 
 interface LoginUserUseCase {
-  execute(loginUserDto: LoginUserDto): Promise<any>
+  execute(loginUserDto: LoginUserDto): Promise<UserToken>
 }
 
 type SignToken = (payload: Object, duration?: string) => Promise<string | null>
@@ -24,7 +24,7 @@ export class LoginUser implements LoginUserUseCase {
     private readonly signToken: SignToken = JwtAdapter.generateToken
   ) {}
 
-  async execute(loginUserDto: LoginUserDto): Promise<any> {
+  async execute(loginUserDto: LoginUserDto): Promise<UserToken> {
     // Get user
     const user = await this.authRepository.login(loginUserDto)
     // Token

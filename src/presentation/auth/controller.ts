@@ -1,17 +1,11 @@
 import { Request, Response } from 'express'
-import {
-  AuthRepository,
-  CustomError,
-  LoginUserDto,
-  RegisterUser,
-  RegisterUserDto,
-  LoginUser
-} from '../../domain'
-import { JwtAdapter } from '../../config'
-import { prisma } from '../../data/postgresql/postgres-database'
+
+import { CustomError } from '@domain/errors'
+import { AuthRepository } from '@domain/repositories'
+import { RegisterUser, LoginUser } from '@domain/use-cases'
+import { LoginUserDto, RegisterUserDto } from '@domain/dtos'
 
 export class AuthController {
-  // DI - Dependency Injection
   constructor(private readonly authRepository: AuthRepository) {}
 
   private handleError = (error: unknown, res: Response) => {
@@ -19,7 +13,6 @@ export class AuthController {
       return res.status(error.statusCode).json({ error: error.message })
     }
 
-    console.log(error) // Winston
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 
@@ -35,21 +28,11 @@ export class AuthController {
 
   loginUser = (req: Request, res: Response) => {
     const [error, loginUserDto] = LoginUserDto.create(req.body)
-
     if (error) return res.status(400).json({ error })
 
     new LoginUser(this.authRepository)
       .execute(loginUserDto!)
       .then(data => res.json(data))
       .catch(error => this.handleError(error, res))
-  }
-
-  getUsers = (req: Request, res: Response) => {
-    prisma.user
-      .findMany()
-      .then(users => {
-        res.json({ user: req.body.user })
-      })
-      .catch(() => res.status(500).json({ error: 'Internal Server Error' }))
   }
 }

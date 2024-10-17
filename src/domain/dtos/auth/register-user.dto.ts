@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client'
-import { Validators } from '../../../config'
+import { Validators } from '@config/index'
 
 export class RegisterUserDto {
   private constructor(

@@ -28,6 +28,7 @@ model User {
   
   profile                 Profile?
   addresses               Addresses[]
+  products                Product []
 }
 
 model Profile {
@@ -50,4 +51,21 @@ model Addresses {
   house_number            Int
 
   user User @relation(fields: [user_id], references: [id])
+}
+
+model Product {
+  id                      String @id @default(cuid())
+  user_id                 String
+  name                    String
+  description             String
+  stock                   Int
+  price                   Decimal
+  status                  Boolean
+  tags                    String[]
+  images                  String[]
+  created_at              DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("products")
 }

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { JwtAdapter } from '../../config'
-import { prisma } from '../../data/postgresql/postgres-database'
+import { JwtAdapter } from '@config/index'
+import { prisma } from '@data/postgresql/postgres-database'
 
 export class AuthMiddleware {
   static validateJWT = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,6 @@ export class AuthMiddleware {
     const token = authorization.split(' ').at(1) || ''
 
     try {
-      //todo:
       const payload = await JwtAdapter.validateToken<{ id: string }>(token)
 
       if (!payload) return res.status(401).json({ error: 'Invalid token' })
