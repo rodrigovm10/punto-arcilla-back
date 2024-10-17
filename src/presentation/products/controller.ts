@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 
 import { CustomError } from '@domain/errors'
-import { CreateProductDto } from '@domain/dtos'
+import { CreateProductDto, UpdateProductDto } from '@domain/dtos'
 import { ProductRepository } from '@domain/repositories'
 import { CreateProduct, GetAllProducts, GetProductById, DeleteProduct } from '@domain/use-cases'
+import { UpdateProduct } from '@domain/use-cases/products/update-product.use-case'
 
 export class ProductController {
   constructor(private readonly productRepository: ProductRepository) {}
@@ -13,7 +14,7 @@ export class ProductController {
       return res.status(error.statusCode).json({ error: error.message })
     }
 
-    return error
+    return res.status(500).json({ error: 'Internal Server Error' })
   }
 
   createProduct = (req: Request, res: Response) => {
@@ -41,6 +42,20 @@ export class ProductController {
 
     new GetProductById(this.productRepository)
       .execute(id)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
+
+  updateProduct = (req: Request, res: Response) => {
+    const id = req.params.id
+    const [error, productDto] = UpdateProductDto.create(req.body)
+
+    if (error) return res.status(400).json({ error })
+
+    if (!id) return res.status(400).json({ error: 'Missing required parameter: id' })
+
+    new UpdateProduct(this.productRepository)
+      .execute(id, productDto!)
       .then(data => res.json(data))
       .catch(error => this.handleError(error, res))
   }

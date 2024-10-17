@@ -1,6 +1,6 @@
 import { ProductDataSource } from '@domain/datasources'
-import { CreateProductDto } from '@domain/dtos'
-import { ProductEntity } from '@domain/entities'
+import { CreateProductDto, UpdateProductDto } from '@domain/dtos'
+import { ProductEntity, ProductUpdatedEntity } from '@domain/entities'
 import { ProductRepository } from '@domain/repositories'
 
 export class ProductRepositoryImpl implements ProductRepository {
@@ -20,5 +20,9 @@ export class ProductRepositoryImpl implements ProductRepository {
 
   delete(id: string): Promise<string> {
     return this.productDatasource.delete(id)
+  }
+
+  update(id: string, productDto: UpdateProductDto): Promise<ProductUpdatedEntity> {
+    return this.productDatasource.update(id, productDto)
   }
 }

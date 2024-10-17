@@ -13,14 +13,14 @@ interface Product {
 }
 
 interface CreateProductUseCase {
-  execute(createProductDto: CreateProductDto): Promise<Product>
+  execute(productDto: CreateProductDto): Promise<Product>
 }
 
 export class CreateProduct implements CreateProductUseCase {
   constructor(private readonly productRepository: ProductRepository) {}
 
-  async execute(createProductDto: CreateProductDto): Promise<Product> {
-    const product = await this.productRepository.create(createProductDto)
+  async execute(productDto: CreateProductDto): Promise<Product> {
+    const product = await this.productRepository.create(productDto)
 
     return {
       created: true,

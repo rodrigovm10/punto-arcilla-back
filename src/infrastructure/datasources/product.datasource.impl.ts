@@ -1,6 +1,6 @@
 import { CustomError } from '@domain/errors'
-import { CreateProductDto } from '@domain/dtos'
-import { ProductEntity } from '@domain/entities'
+import { CreateProductDto, UpdateProductDto } from '@domain/dtos'
+import { ProductEntity, ProductUpdatedEntity } from '@domain/entities'
 import { ProductDataSource } from '@domain/datasources'
 import { prisma } from '@data/postgresql/postgres-database'
 import { ProductMapper } from '@infrastructure/mappers/product.mapper'
@@ -83,7 +83,23 @@ export class ProductDataSourceImpl implements ProductDataSource {
       return 'Product deleted succesfully'
     } catch (error) {
       if (error instanceof CustomError) throw error
-      console.log(error)
+
+      throw error
+    }
+  }
+
+  async update(id: string, productDto: UpdateProductDto): Promise<ProductUpdatedEntity> {
+    try {
+      const productExists = await prisma.product.findFirst({ where: { id } })
+
+      if (!productExists) throw CustomError.notFound('Product does not existe')
+
+      const productUpdated = await prisma.product.update({ where: { id }, data: productDto })
+
+      return ProductMapper.productEntityFromObject(productUpdated)
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+
       throw error
     }
   }

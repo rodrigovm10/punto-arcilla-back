@@ -22,8 +22,6 @@ export class CreateProductDto {
     if (!status) return ['Missing status']
     if (!tags) return ['Missing tags']
     if (!images) return ['Missing images']
-    // if (tags?.length === 0) return ['The tags should be have at least one']
-    // if (images?.lenght === 0) return ['The images should be have at least one']
 
     return [
       undefined,

@@ -18,6 +18,7 @@ export class ProductRoutes {
     router.get('/:id', AuthMiddleware.validateJWT, controller.getProductsById)
 
     router.post('/', AuthMiddleware.validateJWT, controller.createProduct)
+    router.patch('/:id', AuthMiddleware.validateJWT, controller.updateProduct)
     router.delete('/:id', AuthMiddleware.validateJWT, controller.deleteProduct)
 
     return router
