@@ -94,7 +94,30 @@ export class ProductDataSourceImpl implements ProductDataSource {
 
       if (!productExists) throw CustomError.notFound('Product does not existe')
 
-      const productUpdated = await prisma.product.update({ where: { id }, data: productDto })
+      const { images, imagesToDelete, tagsToDelete, tags, ...product } = productDto
+
+      if (images) {
+        const productUpdated = await prisma.product.update({
+          where: { id },
+          data: { ...product, images: { push: images } }
+        })
+
+        return ProductMapper.productEntityFromObject(productUpdated)
+      }
+
+      if (tags) {
+        const productUpdated = await prisma.product.update({
+          where: { id },
+          data: { ...product, tags: { push: tags } }
+        })
+
+        return ProductMapper.productEntityFromObject(productUpdated)
+      }
+
+      const productUpdated = await prisma.product.update({
+        where: { id },
+        data: { ...product }
+      })
 
       return ProductMapper.productEntityFromObject(productUpdated)
     } catch (error) {

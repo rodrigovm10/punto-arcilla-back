@@ -6,14 +6,28 @@ export class UpdateProductDto {
     public price?: number,
     public status?: boolean,
     public tags?: string[],
-    public images?: string[]
+    public images?: string[],
+    public imagesToDelete?: string[],
+    public tagsToDelete?: string[]
   ) {}
 
   static create(object: { [key: string]: any }): [string?, UpdateProductDto?] {
-    const { name, description, stock, price, status, tags, images } = object
+    const { name, description, stock, price, status, tags, images, imagesToDelete, tagsToDelete } =
+      object
 
-    if (name && !name) return ['Name can not be undefined']
-
-    return [undefined, new UpdateProductDto(name, description, stock, price, status, tags, images)]
+    return [
+      undefined,
+      new UpdateProductDto(
+        name,
+        description,
+        stock,
+        price,
+        status,
+        tags,
+        images,
+        imagesToDelete,
+        tagsToDelete
+      )
+    ]
   }
 }
