@@ -18,7 +18,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
       })
 
       // 2. Verify if user_id does not  exists
-      if (!user) throw CustomError.notFound('User not found')
+      if (!user) throw CustomError.notFound('Usuario no encontrado')
 
       // 3. Create product
       const product = await prisma.product.create({
@@ -62,7 +62,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
         }
       })
 
-      if (!product) throw CustomError.notFound('Product not found')
+      if (!product) throw CustomError.notFound('Producto no encontrado.')
 
       return ProductMapper.productEntityFromObject(product)
     } catch (error) {
@@ -76,7 +76,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
     try {
       const productExists = await prisma.product.findFirst({ where: { id } })
 
-      if (!productExists) throw CustomError.notFound('Product not found')
+      if (!productExists) throw CustomError.notFound('Producto no encontrado.')
 
       await prisma.product.delete({ where: { id } })
 
@@ -92,7 +92,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
     try {
       const productExists = await prisma.product.findFirst({ where: { id } })
 
-      if (!productExists) throw CustomError.notFound('Product does not existe')
+      if (!productExists) throw CustomError.notFound('El producto no existe.')
 
       const { images, imagesToDelete, tagsToDelete, tags, ...product } = productDto
 

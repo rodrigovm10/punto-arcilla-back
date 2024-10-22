@@ -7,7 +7,6 @@ interface UserToken {
   token: string
   user: {
     id: string
-    name: string
     email: string
   }
 }
@@ -37,7 +36,6 @@ export class RegisterUser implements RegisterUserUseCase {
       token: token,
       user: {
         id: user.id,
-        name: user.name,
         email: user.email
       }
     }

@@ -16,7 +16,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
   ) {}
 
   async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
-    const { name, email, password, role } = registerUserDto
+    const { email, password } = registerUserDto
 
     try {
       // 1. Verify if email exists
@@ -26,7 +26,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (exists) throw CustomError.badRequest('User already exists')
+      if (exists) throw CustomError.badRequest('El usuario ya está registrado.')
 
       // 2. Hash password
       const hashedPassword = this.hashPassword(password)
@@ -34,10 +34,8 @@ export class AuthDataSourceImpl implements AuthDataSource {
       // 3. Create User
       const user = await prisma.user.create({
         data: {
-          name,
           email,
-          password: hashedPassword,
-          role
+          password: hashedPassword
         }
       })
 
@@ -61,11 +59,12 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (!dbUser) throw CustomError.badRequest('User not found')
+      if (!dbUser) throw CustomError.badRequest('Usuario no encontrado.')
 
       const passwordCorrect = this.comparePassword(password, dbUser?.password)
 
-      if (!passwordCorrect) throw CustomError.badRequest('Email or password is wrong')
+      if (!passwordCorrect)
+        throw CustomError.badRequest('El correo o la contraseña son incorrectos.')
 
       // Get user
       return UserMapper.userEntityFromObject(dbUser)
