@@ -5,3 +5,7 @@ export * from '@domain/use-cases/products/create-product.use-case'
 export * from '@domain/use-cases/products/get-all-products.use-case'
 export * from '@domain/use-cases/products/get-product-by-id.use.case'
 export * from '@domain/use-cases/products/delete-product.use-case'
+export * from '@domain/use-cases/products/update-product.use-case'
+
+export * from '@domain/use-cases/profile/create-profile.use-case'
+export * from '@domain/use-cases/profile/update-profile.use-case'

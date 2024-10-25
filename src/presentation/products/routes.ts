@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { ProductController } from '@presentation/products/controller'
-import { ProductDataSourceImpl } from '@infrastructure/datasources/product.datasource.impl'
-import { ProductRepositoryImpl } from '@infrastructure/repositories'
+
 import { AuthMiddleware } from '@presentation/middlewares'
+import { ProductController } from '@presentation/products/controller'
+import { ProductDataSourceImpl } from '@infrastructure/datasources'
+import { ProductRepositoryImpl } from '@infrastructure/repositories'
 
 export class ProductRoutes {
   static get routes(): Router {

@@ -3,8 +3,13 @@ import { Request, Response } from 'express'
 import { CustomError } from '@domain/errors'
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos'
 import { ProductRepository } from '@domain/repositories'
-import { CreateProduct, GetAllProducts, GetProductById, DeleteProduct } from '@domain/use-cases'
-import { UpdateProduct } from '@domain/use-cases/products/update-product.use-case'
+import {
+  CreateProduct,
+  GetAllProducts,
+  GetProductById,
+  DeleteProduct,
+  UpdateProduct
+} from '@domain/use-cases'
 
 export class ProductController {
   constructor(private readonly productRepository: ProductRepository) {}

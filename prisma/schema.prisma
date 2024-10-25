@@ -32,7 +32,7 @@ model User {
 }
 
 model Profile {
-  id                      String 
+  id                      String @id @default(cuid())
   user_id                 String @unique
   business_description    String?
   avatar                  String?

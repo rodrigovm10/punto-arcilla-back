@@ -1,1 +1,3 @@
 export * from '@infrastructure/datasources/auth.datasource.impl'
+export * from '@infrastructure/datasources/product.datasource.impl'
+export * from '@infrastructure/datasources/profile.datasource.impl'
