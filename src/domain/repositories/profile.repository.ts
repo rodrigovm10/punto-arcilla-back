@@ -2,6 +2,8 @@ import { CreateProfileDto, UpdateProfileDto } from '@domain/dtos'
 import { ProfileEntity } from '@domain/entities'
 
 export abstract class ProfileRepository {
+  abstract findById(id: string): Promise<ProfileEntity>
+
   abstract create(profileDto: CreateProfileDto): Promise<ProfileEntity>
 
   abstract update(id: string, updateProfileDto: UpdateProfileDto): Promise<ProfileEntity>

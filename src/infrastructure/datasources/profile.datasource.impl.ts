@@ -6,6 +6,24 @@ import { ProfileMapper } from '@infrastructure/mappers/profile.mapper'
 import { ProfileDataSource } from '@domain/datasources/profile.datasource'
 
 export class ProfileDataSourceImpl implements ProfileDataSource {
+  async findById(id: string): Promise<ProfileEntity> {
+    try {
+      const profile = await prisma.profile.findFirst({
+        where: {
+          user_id: id
+        }
+      })
+
+      if (!profile) throw CustomError.notFound('Perfil no encontrado.')
+
+      return ProfileMapper.profileEntityFromObject(profile)
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+
+      throw error
+    }
+  }
+
   async create(createProfileDto: CreateProfileDto): Promise<ProfileEntity> {
     const { userId, avatar, businessDescription } = createProfileDto
 

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
+import { CustomError } from '@domain/errors'
 import { ProfileRepository } from '@domain/repositories/profile.repository'
 import { CreateProfileDto, UpdateProfileDto } from '@domain/dtos'
-import { CreateProfile, UpdateProfile } from '@domain/use-cases'
-import { CustomError } from '@domain/errors'
+import { CreateProfile, UpdateProfile, GetProfileById } from '@domain/use-cases'
 
 export class ProfileController {
   constructor(private readonly profileRepository: ProfileRepository) {}
@@ -17,7 +17,16 @@ export class ProfileController {
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 
-  getProfileById = (req: Request, res: Response) => {}
+  getProfileById = (req: Request, res: Response) => {
+    const id = req.params.id
+
+    if (!id) return res.status(400).json({ error: 'Missing requiered parameter: id' })
+
+    new GetProfileById(this.profileRepository)
+      .execute(id)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
 
   createProfile = (req: Request, res: Response) => {
     const [error, profileDto] = CreateProfileDto.create(req.body)

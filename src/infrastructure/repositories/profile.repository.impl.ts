@@ -5,6 +5,11 @@ import { ProfileRepository } from '@domain/repositories/profile.repository'
 
 export class ProfileRepositoryImpl implements ProfileRepository {
   constructor(private readonly profileDataSource: ProfileDataSource) {}
+
+  findById(id: string): Promise<ProfileEntity> {
+    return this.profileDataSource.findById(id)
+  }
+
   create(createProfileDto: CreateProfileDto): Promise<ProfileEntity> {
     return this.profileDataSource.create(createProfileDto)
   }
