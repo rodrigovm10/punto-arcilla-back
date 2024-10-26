@@ -25,7 +25,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
   }
 
   async create(createProfileDto: CreateProfileDto): Promise<ProfileEntity> {
-    const { userId, avatar, businessDescription } = createProfileDto
+    const { userId, name, avatar, businessDescription } = createProfileDto
 
     try {
       // 1. Get user
@@ -47,6 +47,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
         const profile = await prisma.profile.create({
           data: {
             user_id: userId,
+            name,
             business_description: businessDescription,
             avatar
           }
@@ -63,6 +64,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
       const profile = await prisma.profile.create({
         data: {
           user_id: userId,
+          name,
           avatar
         }
       })
@@ -75,7 +77,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
   }
 
   async update(id: string, updateProfileDto: UpdateProfileDto): Promise<ProfileEntity> {
-    const { avatar, businessDescription } = updateProfileDto
+    const { avatar, name, businessDescription } = updateProfileDto
     try {
       // 1. profileExists
       const profileExists = await prisma.profile.findFirst({
@@ -88,7 +90,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
       // 3. If exists update profile
       const profileUpdated = await prisma.profile.update({
         where: { id },
-        data: { business_description: businessDescription, avatar }
+        data: { business_description: businessDescription, avatar, name }
       })
 
       return ProfileMapper.profileEntityFromObject(profileUpdated)

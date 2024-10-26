@@ -5,6 +5,7 @@ interface Profile {
   updated: boolean
   profile: {
     id: string
+    name: string
     bussinessDescription?: string
     avatar?: string
   }
@@ -23,6 +24,7 @@ export class UpdateProfile implements UpdateProfileUseCase {
       updated: true,
       profile: {
         id: profile.id,
+        name: profile.name,
         bussinessDescription: profile.business_description,
         avatar: profile.avatar
       }

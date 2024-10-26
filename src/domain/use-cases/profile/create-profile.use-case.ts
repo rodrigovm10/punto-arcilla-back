@@ -5,6 +5,7 @@ interface Profile {
   created: boolean
   profile: {
     id: string
+    name: string
     bussinessDescription?: string
     avatar?: string
   }
@@ -25,6 +26,7 @@ export class CreateProfile implements CreateProfileUseCase {
 
       profile: {
         id: profile.id,
+        name: profile.name,
         bussinessDescription: profile.business_description,
         avatar: profile.avatar
       }
