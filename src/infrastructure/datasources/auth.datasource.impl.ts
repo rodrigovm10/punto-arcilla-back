@@ -1,11 +1,10 @@
-import { BcryptAdapter } from '@config/index'
-import { UserMapper } from '@infrastructure/mappers'
-import { prisma } from '@data/postgresql/postgres-database'
-
-import { UserEntity } from '@domain/entities'
-import { AuthDataSource } from '@domain/datasources'
-import { LoginUserDto, RegisterUserDto } from '@domain/dtos'
 import { CustomError } from 'domain/errors'
+import { BcryptAdapter } from '@config/index'
+import { UserEntity } from '@domain/entities'
+import { UserMapper } from '@infrastructure/mappers'
+import { AuthDataSource } from '@domain/datasources'
+import { prisma } from '@data/postgresql/postgres-database'
+import { LoginUserDto, RegisterUserDto } from '@domain/dtos'
 
 type HashFunction = (password: string) => string
 type CompareFunction = (password: string, hashed: string) => boolean

@@ -1,9 +1,9 @@
 import { CustomError } from '@domain/errors'
+import { ProductDataSource } from '@domain/datasources'
+import { ProductMapper } from '@infrastructure/mappers'
+import { prisma } from '@data/postgresql/postgres-database'
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos'
 import { ProductEntity, ProductUpdatedEntity } from '@domain/entities'
-import { ProductDataSource } from '@domain/datasources'
-import { prisma } from '@data/postgresql/postgres-database'
-import { ProductMapper } from '@infrastructure/mappers/product.mapper'
 
 export class ProductDataSourceImpl implements ProductDataSource {
   async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
@@ -84,7 +84,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
     } catch (error) {
       if (error instanceof CustomError) throw error
 
-      throw error
+      throw CustomError.internalServer()
     }
   }
 
@@ -123,7 +123,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
     } catch (error) {
       if (error instanceof CustomError) throw error
 
-      throw error
+      throw CustomError.internalServer()
     }
   }
 }

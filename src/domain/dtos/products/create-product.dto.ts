@@ -13,7 +13,7 @@ export class CreateProductDto {
   static create(object: { [key: string]: any }): [string?, CreateProductDto?] {
     const { user_id, name, description, stock, price, status, tags, images } = object
 
-    if (!user_id) return ['Missing user_id']
+    if (!user_id) return ['Missing userId3']
     if (!name) return ['Missing name']
     if (!description) return ['Missing description']
     if (!stock) return ['Missing stock']

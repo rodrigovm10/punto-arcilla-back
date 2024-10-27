@@ -1,5 +1,5 @@
-import { ProductEntity } from '@domain/entities'
 import { CustomError } from '@domain/errors'
+import { ProductEntity } from '@domain/entities'
 
 export class ProductMapper {
   static productEntityFromObject(object: { [key: string]: any }) {

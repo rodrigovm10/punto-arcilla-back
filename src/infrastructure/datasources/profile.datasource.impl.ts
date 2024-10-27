@@ -1,9 +1,9 @@
 import { CustomError } from '@domain/errors'
 import { ProfileEntity } from '@domain/entities'
+import { ProfileDataSource } from '@domain/datasources'
+import { ProfileMapper } from '@infrastructure/mappers/'
 import { prisma } from '@data/postgresql/postgres-database'
 import { CreateProfileDto, UpdateProfileDto } from '@domain/dtos'
-import { ProfileMapper } from '@infrastructure/mappers/profile.mapper'
-import { ProfileDataSource } from '@domain/datasources/profile.datasource'
 
 export class ProfileDataSourceImpl implements ProfileDataSource {
   async findById(id: string): Promise<ProfileEntity> {
@@ -20,7 +20,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
     } catch (error) {
       if (error instanceof CustomError) throw error
 
-      throw error
+      throw CustomError.internalServer()
     }
   }
 
@@ -97,7 +97,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
     } catch (error) {
       if (error instanceof CustomError) throw error
 
-      throw error
+      throw CustomError.internalServer()
     }
   }
 }

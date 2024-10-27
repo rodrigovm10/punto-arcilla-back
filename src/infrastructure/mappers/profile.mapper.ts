@@ -1,5 +1,5 @@
-import { ProfileEntity } from '@domain/entities'
 import { CustomError } from '@domain/errors'
+import { ProfileEntity } from '@domain/entities'
 
 export class ProfileMapper {
   static profileEntityFromObject(object: { [key: string]: any }) {

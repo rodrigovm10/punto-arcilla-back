@@ -1,7 +1,7 @@
 import { ProductDataSource } from '@domain/datasources'
+import { ProductRepository } from '@domain/repositories'
 import { CreateProductDto, UpdateProductDto } from '@domain/dtos'
 import { ProductEntity, ProductUpdatedEntity } from '@domain/entities'
-import { ProductRepository } from '@domain/repositories'
 
 export class ProductRepositoryImpl implements ProductRepository {
   constructor(private readonly productDatasource: ProductDataSource) {}

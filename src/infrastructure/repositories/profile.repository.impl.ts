@@ -1,7 +1,7 @@
-import { ProfileDataSource } from '@domain/datasources/profile.datasource'
-import { CreateProfileDto, UpdateProfileDto } from '@domain/dtos'
 import { ProfileEntity } from '@domain/entities'
-import { ProfileRepository } from '@domain/repositories/profile.repository'
+import { ProfileDataSource } from '@domain/datasources'
+import { ProfileRepository } from '@domain/repositories'
+import { CreateProfileDto, UpdateProfileDto } from '@domain/dtos'
 
 export class ProfileRepositoryImpl implements ProfileRepository {
   constructor(private readonly profileDataSource: ProfileDataSource) {}

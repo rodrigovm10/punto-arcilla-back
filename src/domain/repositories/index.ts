@@ -1,2 +1,4 @@
 export * from '@domain/repositories/auth.repository'
 export * from '@domain/repositories/product.repository'
+export * from '@domain/repositories/profile.repository'
+export * from '@domain/repositories/address.repository'
