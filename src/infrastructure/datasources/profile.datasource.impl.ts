@@ -10,7 +10,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
     try {
       const profile = await prisma.profile.findFirst({
         where: {
-          user_id: id
+          id
         }
       })
 

@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import { CustomError } from '@domain/errors'
 import { CreateAddressDto } from '@domain/dtos'
-import { CreateAddress, GetAddressById } from '@domain/use-cases'
+import { CreateAddress, DeleteAddress, GetAddressById } from '@domain/use-cases'
 import { AddressRepository } from '@domain/repositories'
 
 export class AddressController {
@@ -34,6 +34,17 @@ export class AddressController {
 
     new CreateAddress(this.addressRepository)
       .execute(addressDto!)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
+
+  deleteAddress = (req: Request, res: Response) => {
+    const id = req.params.id
+
+    if (!id) return res.status(400).json({ error: 'Missing requiered parameter: id' })
+
+    new DeleteAddress(this.addressRepository)
+      .execute(id)
       .then(data => res.json(data))
       .catch(error => this.handleError(error, res))
   }

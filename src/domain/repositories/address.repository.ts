@@ -5,4 +5,6 @@ export abstract class AddressRepository {
   abstract findByUserId(id: string): Promise<AddressEntity>
 
   abstract create(createAddressDto: CreateAddressDto): Promise<AddressEntity>
+
+  abstract delete(id: string): Promise<string>
 }

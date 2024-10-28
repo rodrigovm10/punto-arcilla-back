@@ -14,6 +14,7 @@ export class AddressRoutes {
 
     router.get('/:id', AuthMiddleware.validateJWT, controller.getAddressById)
     router.post('/', AuthMiddleware.validateJWT, controller.createAddress)
+    router.delete('/:id', AuthMiddleware.validateJWT, controller.deleteAddress)
     return router
   }
 }

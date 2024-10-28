@@ -57,4 +57,28 @@ export class AddressDataSourceImpl implements AddressDataSource {
       throw error
     }
   }
+
+  async delete(id: string): Promise<string> {
+    try {
+      const addressExists = await prisma.addresses.findFirst({
+        where: {
+          id
+        }
+      })
+
+      if (!addressExists) throw CustomError.notFound('La dirección no existe')
+
+      await prisma.addresses.delete({
+        where: {
+          id
+        }
+      })
+
+      return 'Dirección eliminada correctamente.'
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+
+      throw error
+    }
+  }
 }

@@ -5,4 +5,6 @@ export abstract class AddressDataSource {
   abstract findById(id: string): Promise<AddressEntity>
 
   abstract create(createAddressDto: CreateAddressDto): Promise<AddressEntity>
+
+  abstract delete(id: string): Promise<string>
 }
