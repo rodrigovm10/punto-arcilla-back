@@ -6,6 +6,24 @@ import { CustomError } from '@domain/errors'
 import { AddressMapper } from '@infrastructure/mappers'
 
 export class AddressDataSourceImpl implements AddressDataSource {
+  async findById(id: string): Promise<AddressEntity> {
+    try {
+      const address = await prisma.addresses.findFirst({
+        where: {
+          id
+        }
+      })
+
+      if (!address) throw CustomError.notFound('Dirección no encontrada')
+
+      return AddressMapper.addressEntityFromObject(address)
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+
+      throw error
+    }
+  }
+
   async create(createAddressDto: CreateAddressDto): Promise<AddressEntity> {
     const { userId, city, houseNumber, neighborhood, postalCode, state, street } = createAddressDto
 
