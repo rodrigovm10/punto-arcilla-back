@@ -20,7 +20,7 @@ export class AddressDataSourceImpl implements AddressDataSource {
       if (!userExists) throw CustomError.notFound('El usuario no existe')
 
       // 2. Register user
-      const user = await prisma.addresses.create({
+      const address = await prisma.addresses.create({
         data: {
           user_id: userId,
           city,
@@ -32,11 +32,11 @@ export class AddressDataSourceImpl implements AddressDataSource {
         }
       })
 
-      return AddressMapper.addressEntityFromObject(user)
+      return AddressMapper.addressEntityFromObject(address)
     } catch (error) {
       if (error instanceof CustomError) throw error
 
-      throw CustomError.internalServer()
+      throw error
     }
   }
 }

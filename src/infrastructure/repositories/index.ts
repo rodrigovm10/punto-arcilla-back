@@ -1,3 +1,4 @@
 export * from '@infrastructure/repositories/auth.repository.impl'
 export * from '@infrastructure/repositories/product.repository.impl'
 export * from '@infrastructure/repositories/profile.repository.impl'
+export * from '@infrastructure/repositories/address.repository.impl'

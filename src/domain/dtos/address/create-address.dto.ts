@@ -19,6 +19,8 @@ export class CreateAddressDto {
     if (!neighborhood) return ['Missing neighborhood']
     if (!postalCode) return ['Missing postalCode']
     if (!houseNumber) return ['Missing houseNumber']
+    if (typeof postalCode !== 'number') return ['PostalCode must be a number']
+    if (typeof houseNumber !== 'number') return ['PostalCode must be a number']
 
     return [
       undefined,
