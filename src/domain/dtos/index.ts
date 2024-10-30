@@ -8,3 +8,5 @@ export * from '@domain/dtos/profile/create-profile.dto'
 export * from '@domain/dtos/profile/update-profile.dto'
 
 export * from '@domain/dtos/address/create-address.dto'
+
+export * from '@domain/dtos/user/update-role.dto'

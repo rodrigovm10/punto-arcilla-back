@@ -19,7 +19,7 @@ export class AddressController {
   getAddressById = (req: Request, res: Response) => {
     const id = req.params.id
 
-    if (!id) return res.status(400).json({ error: 'Missing requiered parameter: id' })
+    if (!id) return res.status(400).json({ error: 'Missing required parameter: id' })
 
     new GetAddressById(this.addressRepository)
       .execute(id)
