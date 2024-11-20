@@ -14,6 +14,18 @@ import {
 export class ProductController {
   constructor(private readonly productRepository: ProductRepository) {}
 
+  // private helperImg = (filePath: string, fileName: string, size = 300) => {
+  //   const outputDir = path.join(__dirname, 'optimize/') // Ruta de la carpeta de salida
+  //   const outputPath = path.join(outputDir, `${fileName}.avif`) // Ruta completa del archivo
+  //   console.log(outputPath)
+  //   if (!fs.existsSync(outputDir)) {
+  //     fs.mkdirSync(outputDir, { recursive: true })
+  //   }
+
+  //   sharp(filePath).resize(size).toFile(outputPath)
+  //   return outputPath.split('\\').pop()
+  // }
+
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
       return res.status(error.statusCode).json({ error: error.message })
@@ -25,6 +37,12 @@ export class ProductController {
   }
 
   createProduct = (req: Request, res: Response) => {
+    // console.log(req.body.images)
+    const files = req.body.images
+
+    if (!files || files.length === 0) {
+      return res.status(400).json({ error: 'No se subieron imágenes.' })
+    }
     const [error, productDto] = CreateProductDto.create(req.body)
 
     if (error) return res.status(400).json({ error })

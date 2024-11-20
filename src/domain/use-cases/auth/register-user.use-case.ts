@@ -2,12 +2,14 @@ import { JwtAdapter } from '@config/index'
 import { CustomError } from '@domain/errors'
 import { RegisterUserDto } from '@domain/dtos'
 import { AuthRepository } from '@domain/repositories'
+import { Role } from '@prisma/client'
 
 interface UserToken {
   token: string
   user: {
     id: string
     email: string
+    role: Role | undefined
   }
 }
 
@@ -36,7 +38,8 @@ export class RegisterUser implements RegisterUserUseCase {
       token: token,
       user: {
         id: user.id,
-        email: user.email
+        email: user.email,
+        role: user.role
       }
     }
   }

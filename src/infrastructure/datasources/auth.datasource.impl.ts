@@ -58,7 +58,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
         }
       })
 
-      if (!dbUser) throw CustomError.badRequest('Usuario no encontrado.')
+      if (!dbUser) throw CustomError.badRequest('No hay una cuenta asociada al correo ingresado.')
 
       const passwordCorrect = this.comparePassword(password, dbUser?.password)
 

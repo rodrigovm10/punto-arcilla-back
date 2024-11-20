@@ -22,12 +22,14 @@ model User {
   id                      String @id @default(cuid())
   email                   String @unique
   password                String 
-  role                    Role @default(BUYER)
+  role                    Role?
   created_at              DateTime @default(now())
   
   profile                 Profile?
-  addresses               Addresses[]
+  addresses               Address[]
   products                Product []
+  cart                    Cart?
+  order                   Order?
 }
 
 model Profile {
@@ -38,9 +40,11 @@ model Profile {
   avatar                  String?
   
   user User @relation(fields: [user_id], references: [id])
+
+  @@map("profiles")
 }
 
-model Addresses {
+model Address {
   id                      String @id @default(cuid())
   user_id                 String
   street                  String
@@ -51,6 +55,8 @@ model Addresses {
   house_number            Int
 
   user User @relation(fields: [user_id], references: [id])
+
+  @@map("addresses")
 }
 
 model Product {
@@ -60,12 +66,60 @@ model Product {
   description             String
   stock                   Int
   price                   Decimal
-  status                  Boolean
+  status                  Boolean @default(true)
   tags                    String[]
   images                  String[]
   created_at              DateTime @default(now())
+  cart_items              CartItem[]
+  order_items             OrderItem[]
 
   user User @relation(fields: [user_id], references: [id])
 
   @@map("products")
+}
+
+model Cart{
+  id                      String        @id @default(cuid())
+  created_at              DateTime      @default(now())
+  cart_items              CartItem[]
+  user_id                 String        @unique
+  user                    User          @relation(fields: [user_id], references: [id])
+
+  @@map("carts")
+}
+
+model CartItem{
+  id                      String  @id @default(cuid())
+  quantity                Int
+  cart_id                 String
+  product_id              String 
+
+  product                 Product @relation(fields: [product_id], references: [id])
+  cart                    Cart    @relation(fields: [cart_id], references: [id])
+
+  @@map("cart_items")
+}
+
+model Order {
+  id                      String @id @default(cuid())
+  user_id                 String @unique
+  order_date              DateTime    @default(now())
+  status                  Boolean  
+  total_amount            Decimal
+  order_items             OrderItem[]
+
+  user                    User @relation(fields: [user_id], references: [id])
+
+  @@map("orders")
+}
+model OrderItem {
+  id                      String @id @default(cuid())
+  order_id                String @unique
+  product_id              String  @unique
+  quantity                Int
+
+  product                 Product @relation(fields: [product_id], references: [id])
+  order                   Order   @relation(fields: [order_id], references: [id])
+
+  @@map("order_items")
 }

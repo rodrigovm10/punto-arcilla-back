@@ -16,3 +16,7 @@ export * from '@domain/use-cases/address/get-address-by-id.use-case'
 export * from '@domain/use-cases/address/delete-address.use-case'
 
 export * from '@domain/use-cases/user/update-role.use-case'
+export * from '@domain/use-cases/user/get-user.use-case'
+export * from '@domain/use-cases/user/get-address.use-case'
+export * from '@domain/use-cases/user/get-profile.use-case'
+export * from '@domain/use-cases/user/get-products.use-case'

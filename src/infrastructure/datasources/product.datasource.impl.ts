@@ -7,7 +7,7 @@ import { ProductEntity, ProductUpdatedEntity } from '@domain/entities'
 
 export class ProductDataSourceImpl implements ProductDataSource {
   async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
-    const { user_id, name, description, price, images, status, stock, tags } = createProductDto
+    const { user_id, name, description, price, images, stock, tags } = createProductDto
 
     try {
       // 1. Get user
@@ -27,7 +27,6 @@ export class ProductDataSourceImpl implements ProductDataSource {
           description,
           price,
           images,
-          status,
           stock,
           tags,
           user_id

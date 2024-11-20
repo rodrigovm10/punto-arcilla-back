@@ -6,7 +6,6 @@ export class ProductEntity {
     public description: string,
     public stock: number,
     public price: number,
-    public status: boolean,
     public tags: string[],
     public images: string[]
   ) {}

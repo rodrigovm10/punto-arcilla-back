@@ -4,7 +4,7 @@ import { envs } from './envs'
 const JWT_SEED = envs.JWT_SEED!
 
 export class JwtAdapter {
-  static async generateToken(payload: Object, duration: string = '2h'): Promise<string | null> {
+  static async generateToken(payload: Object, duration: string = '30d'): Promise<string | null> {
     return new Promise(resolve => {
       // Todo: generate seed
 

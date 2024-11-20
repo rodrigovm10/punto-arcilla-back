@@ -12,6 +12,10 @@ export class UserRoutes {
     const userRepository = new UserRepositoryImpl(datasource)
     const controller = new UserController(userRepository)
 
+    router.get('/:id', AuthMiddleware.validateJWT, controller.getUser)
+    router.get('/:id/address', AuthMiddleware.validateJWT, controller.getAddress)
+    router.get('/:id/profile', AuthMiddleware.validateJWT, controller.getProfile)
+    router.get('/:id/products', AuthMiddleware.validateJWT, controller.getProducts)
     router.patch('/:id/role', AuthMiddleware.validateJWT, controller.updateRole)
 
     return router
