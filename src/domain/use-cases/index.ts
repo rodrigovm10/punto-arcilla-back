@@ -20,3 +20,5 @@ export * from '@domain/use-cases/user/get-user.use-case'
 export * from '@domain/use-cases/user/get-address.use-case'
 export * from '@domain/use-cases/user/get-profile.use-case'
 export * from '@domain/use-cases/user/get-products.use-case'
+
+export * from '@domain/use-cases/cart/create-cart.use-case'

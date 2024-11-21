@@ -38,7 +38,7 @@ export class UserDataSourceImpl implements UserDataSource {
 
       if (!user) throw CustomError.notFound('El usuario no existe.')
 
-      const address = await prisma.addresses.findFirst({
+      const address = await prisma.address.findFirst({
         where: {
           user_id: id
         }

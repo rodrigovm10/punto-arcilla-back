@@ -19,7 +19,7 @@ export class AuthDataSourceImpl implements AuthDataSource {
 
     try {
       // 1. Verify if email exists
-      const exists = await prisma.user.findUnique({
+      const exists = await prisma.user.findFirst({
         where: {
           email
         }

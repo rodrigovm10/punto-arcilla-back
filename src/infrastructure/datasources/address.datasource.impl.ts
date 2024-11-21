@@ -8,7 +8,7 @@ import { AddressMapper } from '@infrastructure/mappers'
 export class AddressDataSourceImpl implements AddressDataSource {
   async findById(id: string): Promise<AddressEntity> {
     try {
-      const address = await prisma.addresses.findFirst({
+      const address = await prisma.address.findFirst({
         where: {
           id
         }
@@ -38,7 +38,7 @@ export class AddressDataSourceImpl implements AddressDataSource {
       if (!userExists) throw CustomError.notFound('El usuario no existe')
 
       // 2. Register user
-      const address = await prisma.addresses.create({
+      const address = await prisma.address.create({
         data: {
           user_id: userId,
           city,
@@ -60,7 +60,7 @@ export class AddressDataSourceImpl implements AddressDataSource {
 
   async delete(id: string): Promise<string> {
     try {
-      const addressExists = await prisma.addresses.findFirst({
+      const addressExists = await prisma.address.findFirst({
         where: {
           id
         }
@@ -68,7 +68,7 @@ export class AddressDataSourceImpl implements AddressDataSource {
 
       if (!addressExists) throw CustomError.notFound('La dirección no existe')
 
-      await prisma.addresses.delete({
+      await prisma.address.delete({
         where: {
           id
         }

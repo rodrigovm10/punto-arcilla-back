@@ -30,6 +30,8 @@ model User {
   products                Product []
   cart                    Cart?
   order                   Order?
+
+  @@map("users")
 }
 
 model Profile {

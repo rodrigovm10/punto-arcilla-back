@@ -30,8 +30,6 @@ export class Server {
 
     // Usar rutas
     this.app.use(this.routes)
-    // Configurar para servir imágenes desde la carpeta 'uploads'
-    this.app.use('/optimize', express.static(path.join(__dirname, '/products/optimize')))
 
     this.app.listen(this.port, () => {
       console.log(`Server running on port ${this.port}`)
