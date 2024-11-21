@@ -1,7 +1,7 @@
 import { CreateCartDto } from '@domain/dtos'
 import { CustomError } from '@domain/errors'
 import { CartRepository } from '@domain/repositories'
-import { CreateCart } from '@domain/use-cases'
+import { CreateCart, DeleteProductFromCart } from '@domain/use-cases'
 import { Request, Response } from 'express'
 
 export class CartController {
@@ -25,5 +25,15 @@ export class CartController {
       .catch(error => this.handleError(error, res))
   }
 
-  deleteProductFromCart = (req: Request, res: Response) => {}
+  deleteProductFromCart = (req: Request, res: Response) => {
+    const { userId, productId } = req.params
+    console.log(userId, productId)
+    if (!userId || !productId)
+      return res.status(400).json({ error: 'Missing required parameter: id' })
+
+    new DeleteProductFromCart(this.cartRepository)
+      .execute(userId, productId)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
 }

@@ -3,4 +3,6 @@ import { CartEntity } from '@domain/entities'
 
 export abstract class CartRepository {
   abstract create(createCartDto: CreateCartDto): Promise<CartEntity>
+
+  abstract deleteProductFromCart(userId: string, productId: string): Promise<string>
 }

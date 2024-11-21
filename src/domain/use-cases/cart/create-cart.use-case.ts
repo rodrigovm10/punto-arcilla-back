@@ -5,7 +5,7 @@ import { CartRepository } from '@domain/repositories'
 interface Cart {
   cart: {
     id: string
-    cartItems: CartItemEntity[]
+    cart_items: CartItemEntity
   }
 }
 
@@ -22,7 +22,7 @@ export class CreateCart implements CreatCartUseCase {
     return {
       cart: {
         id: cart.id,
-        cartItems: cart.cartItems
+        cart_items: cart.cart_items
       }
     }
   }

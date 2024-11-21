@@ -13,6 +13,12 @@ export class CartRoutes {
     const controller = new CartController(cartRepository)
 
     router.post('/', AuthMiddleware.validateJWT, controller.createCart)
+    router.delete(
+      '/:userId/items/:productId',
+      AuthMiddleware.validateJWT,
+      controller.deleteProductFromCart
+    )
+
     return router
   }
 }

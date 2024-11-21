@@ -10,14 +10,14 @@ export class CartDataSourceImpl implements CartDataSource {
     const { userId, productId, quantity } = createCartDto
 
     try {
-      // 1. Buscar carrito del usuario
+      // 1. Search user cart
       let cart = await prisma.cart.findFirst({
         where: { user_id: userId },
-        include: { cart_items: true } // Incluye los items para trabajar con ellos
+        include: { cart_items: true }
       })
 
       if (!cart) {
-        // 2. Si no existe carrito, crear uno con el producto
+        // 2. If cart does not exist create one
         cart = await prisma.cart.create({
           data: {
             user_id: userId,
@@ -25,36 +25,62 @@ export class CartDataSourceImpl implements CartDataSource {
               create: { product_id: productId, quantity }
             }
           },
-          include: { cart_items: true } // Para devolver los datos completos
+          include: { cart_items: true }
         })
       } else {
-        // 3. Si existe carrito, buscar si el producto ya está en el carrito
+        // 3. If cart exists, search if the product is in the cart
         const existingCartItem = cart.cart_items.find(item => item.product_id === productId)
 
         if (existingCartItem) {
-          // 4. Si el producto ya existe, actualiza la cantidad
+          // 4. If products exists, update quantity
           await prisma.cartItem.update({
             where: { id: existingCartItem.id },
             data: { quantity: existingCartItem.quantity + quantity }
           })
         } else {
-          // 5. Si el producto no existe, agregarlo al carrito
+          // 5. If product does not exists, add product
           await prisma.cartItem.create({
             data: { cart_id: cart.id, product_id: productId, quantity }
           })
         }
 
-        // Actualizar la instancia de carrito con los nuevos datos
         cart = await prisma.cart.findFirst({
           where: { user_id: userId },
           include: { cart_items: true }
         })
       }
 
-      // 6. Retornar el carrito transformado a entidad
       if (!cart) throw new Error('Unexpected error: Cart not found after creation.')
       return CartMapper.cartEntityFromObject(cart)
     } catch (error) {
+      if (error instanceof CustomError) throw error
+      throw error
+    }
+  }
+
+  async deleteProductFromCart(userId: string, productId: string): Promise<string> {
+    try {
+      // 1. Search user cart
+      const cart = await prisma.cart.findFirst({
+        where: { user_id: userId },
+        include: { cart_items: true }
+      })
+
+      if (!cart) CustomError.notFound('El usuario no tiene carrito creado')
+      console.log(cart?.cart_items[0])
+
+      // 2. Search product in cart
+      const cartItem = cart?.cart_items.find(({ product_id }) => product_id === productId)
+
+      if (!cartItem) CustomError.notFound('El producto no existe en el carrito')
+
+      await prisma.cartItem.delete({
+        where: { id: cartItem?.id }
+      })
+
+      return 'Producto eliminado.'
+    } catch (error) {
+      console.log(error)
       if (error instanceof CustomError) throw error
       throw error
     }
