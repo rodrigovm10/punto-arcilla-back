@@ -6,6 +6,22 @@ import { CustomError } from '@domain/errors'
 import { CartMapper } from '@infrastructure/mappers/cart.mapper'
 
 export class CartDataSourceImpl implements CartDataSource {
+  async getCart(id: string): Promise<CartEntity> {
+    try {
+      const cart = await prisma.cart.findFirst({
+        where: { user_id: id },
+        include: { cart_items: true }
+      })
+
+      if (!cart) CustomError.notFound('El usuario no tiene carrito creado')
+
+      return CartMapper.cartEntityFromObject(cart!)
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+      throw error
+    }
+  }
+
   async create(createCartDto: CreateCartDto): Promise<CartEntity> {
     const { userId, productId, quantity } = createCartDto
 
@@ -66,11 +82,10 @@ export class CartDataSourceImpl implements CartDataSource {
         include: { cart_items: true }
       })
 
-      if (!cart) CustomError.notFound('El usuario no tiene carrito creado')
-      console.log(cart?.cart_items[0])
+      if (!cart) throw CustomError.notFound('El usuario no tiene carrito creado')
 
       // 2. Search product in cart
-      const cartItem = cart?.cart_items.find(({ product_id }) => product_id === productId)
+      const cartItem = cart.cart_items.find(({ product_id }) => product_id === productId)
 
       if (!cartItem) CustomError.notFound('El producto no existe en el carrito')
 
@@ -80,8 +95,30 @@ export class CartDataSourceImpl implements CartDataSource {
 
       return 'Producto eliminado.'
     } catch (error) {
+      if (error instanceof CustomError) throw error
+      throw error
+    }
+  }
+
+  async clearCart(id: string): Promise<string> {
+    try {
+      const cart = await prisma.cart.findFirst({
+        where: {
+          id
+        }
+      })
+
+      if (!cart) throw CustomError.notFound('No hay carrito a eliminar')
+
+      await prisma.cartItem.deleteMany({
+        where: { cart_id: cart.id }
+      })
+
+      return 'Carrito eliminado'
+    } catch (error) {
       console.log(error)
       if (error instanceof CustomError) throw error
+
       throw error
     }
   }

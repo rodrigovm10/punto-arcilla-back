@@ -1,7 +1,7 @@
 import { CreateCartDto } from '@domain/dtos'
 import { CustomError } from '@domain/errors'
 import { CartRepository } from '@domain/repositories'
-import { CreateCart, DeleteProductFromCart } from '@domain/use-cases'
+import { ClearCart, CreateCart, DeleteProductFromCart, GetCart } from '@domain/use-cases'
 import { Request, Response } from 'express'
 
 export class CartController {
@@ -13,6 +13,17 @@ export class CartController {
     }
 
     return res.status(500).json({ error: 'Internal Server Error' })
+  }
+
+  getCart = (req: Request, res: Response) => {
+    const { id } = req.params
+
+    if (!id) return res.status(400).json({ error: 'Missing required parameter: id' })
+
+    new GetCart(this.cartRepository)
+      .execute(id)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
   }
 
   createCart = (req: Request, res: Response) => {
@@ -27,12 +38,23 @@ export class CartController {
 
   deleteProductFromCart = (req: Request, res: Response) => {
     const { userId, productId } = req.params
-    console.log(userId, productId)
+
     if (!userId || !productId)
       return res.status(400).json({ error: 'Missing required parameter: id' })
 
     new DeleteProductFromCart(this.cartRepository)
       .execute(userId, productId)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
+
+  clearCart = (req: Request, res: Response) => {
+    const { id } = req.params
+
+    if (!id) return res.status(400).json({ error: 'Missing required parameter: id' })
+
+    new ClearCart(this.cartRepository)
+      .execute(id)
       .then(data => res.json(data))
       .catch(error => this.handleError(error, res))
   }

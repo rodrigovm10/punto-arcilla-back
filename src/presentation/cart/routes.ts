@@ -12,12 +12,14 @@ export class CartRoutes {
     const cartRepository = new CartRepositoryImpl(datasource)
     const controller = new CartController(cartRepository)
 
+    router.get('/:id', AuthMiddleware.validateJWT, controller.getCart)
     router.post('/', AuthMiddleware.validateJWT, controller.createCart)
     router.delete(
       '/:userId/items/:productId',
       AuthMiddleware.validateJWT,
       controller.deleteProductFromCart
     )
+    router.delete('/:id', AuthMiddleware.validateJWT, controller.clearCart)
 
     return router
   }
