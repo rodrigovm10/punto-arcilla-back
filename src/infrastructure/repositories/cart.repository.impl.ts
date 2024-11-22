@@ -1,10 +1,13 @@
 import { CartDataSource } from '@domain/datasources'
 import { CreateCartDto } from '@domain/dtos'
-import { CartEntity } from '@domain/entities'
+import { CartEntity, CartItemEntity } from '@domain/entities'
 import { CartRepository } from '@domain/repositories'
 
 export class CartRepositoryImpl implements CartRepository {
   constructor(private readonly cartDatasource: CartDataSource) {}
+  updateProductQuantity(id: string, productId: string, quantity: number): Promise<CartItemEntity> {
+    return this.cartDatasource.updateProductQuantity(id, productId, quantity)
+  }
 
   getCart(id: string): Promise<CartEntity> {
     return this.cartDatasource.getCart(id)

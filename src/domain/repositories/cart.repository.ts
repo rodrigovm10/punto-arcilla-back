@@ -1,5 +1,5 @@
 import { CreateCartDto } from '@domain/dtos'
-import { CartEntity } from '@domain/entities'
+import { CartEntity, CartItemEntity } from '@domain/entities'
 
 export abstract class CartRepository {
   abstract getCart(id: string): Promise<CartEntity>
@@ -9,4 +9,10 @@ export abstract class CartRepository {
   abstract deleteProductFromCart(userId: string, productId: string): Promise<string>
 
   abstract clearCart(id: string): Promise<string>
+
+  abstract updateProductQuantity(
+    id: string,
+    productId: string,
+    quantity: number
+  ): Promise<CartItemEntity>
 }

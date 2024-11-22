@@ -20,6 +20,11 @@ export class CartRoutes {
       controller.deleteProductFromCart
     )
     router.delete('/:id', AuthMiddleware.validateJWT, controller.clearCart)
+    router.patch(
+      '/:id/item/:productId',
+      AuthMiddleware.validateJWT,
+      controller.updateProductQuantity
+    )
 
     return router
   }

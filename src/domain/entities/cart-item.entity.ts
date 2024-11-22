@@ -2,7 +2,7 @@ export class CartItemEntity {
   constructor(
     public id: string,
     public quantity: number,
-    public cartId: string,
-    public productId: string
+    public cart_id: string,
+    public product_id: string
   ) {}
 }

@@ -1,11 +1,46 @@
 import { prisma } from '@data/postgresql/postgres-database'
 import { CartDataSource } from '@domain/datasources'
-import { CreateCartDto } from '@domain/dtos'
-import { CartEntity } from '@domain/entities'
+import { CreateCartDto, UpdateProductCartDto } from '@domain/dtos'
+import { CartEntity, CartItemEntity } from '@domain/entities'
 import { CustomError } from '@domain/errors'
+import { CartItemMapper } from '@infrastructure/mappers/cart-item.mapper'
 import { CartMapper } from '@infrastructure/mappers/cart.mapper'
 
 export class CartDataSourceImpl implements CartDataSource {
+  async updateProductQuantity(
+    id: string,
+    productId: string,
+    quantity: number
+  ): Promise<CartItemEntity> {
+    try {
+      const cart = await prisma.cart.findFirst({
+        where: { id: id },
+        include: { cart_items: true }
+      })
+
+      if (!cart) {
+        throw CustomError.notFound('Carrito no encontrado')
+      }
+
+      // 2. Buscar el producto en el carrito
+      const cartItem = cart.cart_items.find(item => item.product_id === productId)
+
+      if (!cartItem) {
+        throw CustomError.notFound('Producto no encontrado en el carrito')
+      }
+
+      // 3. Actualizar la cantidad o los datos del producto
+      const productUpdated = await prisma.cartItem.update({
+        where: { id: cartItem.id },
+        data: { quantity }
+      })
+
+      return CartItemMapper.cartItemEntityFromObject(productUpdated)
+    } catch (error) {
+      if (error instanceof CustomError) throw error
+      throw error
+    }
+  }
   async getCart(id: string): Promise<CartEntity> {
     try {
       const cart = await prisma.cart.findFirst({

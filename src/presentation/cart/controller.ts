@@ -1,7 +1,13 @@
-import { CreateCartDto } from '@domain/dtos'
+import { CreateCartDto, UpdateProductCartDto } from '@domain/dtos'
 import { CustomError } from '@domain/errors'
 import { CartRepository } from '@domain/repositories'
-import { ClearCart, CreateCart, DeleteProductFromCart, GetCart } from '@domain/use-cases'
+import {
+  ClearCart,
+  CreateCart,
+  DeleteProductFromCart,
+  GetCart,
+  UpdateProductQuantity
+} from '@domain/use-cases'
 import { Request, Response } from 'express'
 
 export class CartController {
@@ -55,6 +61,20 @@ export class CartController {
 
     new ClearCart(this.cartRepository)
       .execute(id)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
+
+  updateProductQuantity = (req: Request, res: Response) => {
+    const { id, productId } = req.params
+    const [error, updateProductQuantityDto] = UpdateProductCartDto.create(req.body)
+
+    if (error) return res.status(400).json({ error })
+
+    if (!id || !productId) return res.status(400).json({ error: 'Missing required parameter: id' })
+
+    new UpdateProductQuantity(this.cartRepository)
+      .execute(id, productId, updateProductQuantityDto?.quantity!)
       .then(data => res.json(data))
       .catch(error => this.handleError(error, res))
   }
