@@ -13,7 +13,7 @@ export class CartRepositoryImpl implements CartRepository {
     return this.cartDatasource.getCart(id)
   }
 
-  deleteProductFromCart(userId: string, productId: string): Promise<string> {
+  deleteProductFromCart(userId: string, productId: string): Promise<CartItemEntity> {
     return this.cartDatasource.deleteProductFromCart(userId, productId)
   }
 

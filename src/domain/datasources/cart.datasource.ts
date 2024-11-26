@@ -6,7 +6,7 @@ export abstract class CartDataSource {
 
   abstract create(createCartDto: CreateCartDto): Promise<CartEntity>
 
-  abstract deleteProductFromCart(userId: string, productId: string): Promise<string>
+  abstract deleteProductFromCart(userId: string, productId: string): Promise<CartItemEntity>
 
   abstract clearCart(id: string): Promise<string>
 

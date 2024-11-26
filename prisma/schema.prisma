@@ -25,6 +25,7 @@ model User {
   role                    Role?
   created_at              DateTime @default(now())
   
+  
   profile                 Profile?
   addresses               Address[]
   products                Product []

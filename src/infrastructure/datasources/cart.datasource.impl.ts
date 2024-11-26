@@ -14,7 +14,7 @@ export class CartDataSourceImpl implements CartDataSource {
   ): Promise<CartItemEntity> {
     try {
       const cart = await prisma.cart.findFirst({
-        where: { id: id },
+        where: { user_id: id },
         include: { cart_items: true }
       })
 
@@ -109,7 +109,7 @@ export class CartDataSourceImpl implements CartDataSource {
     }
   }
 
-  async deleteProductFromCart(userId: string, productId: string): Promise<string> {
+  async deleteProductFromCart(userId: string, productId: string): Promise<CartItemEntity> {
     try {
       // 1. Search user cart
       const cart = await prisma.cart.findFirst({
@@ -124,11 +124,11 @@ export class CartDataSourceImpl implements CartDataSource {
 
       if (!cartItem) CustomError.notFound('El producto no existe en el carrito')
 
-      await prisma.cartItem.delete({
+      const itemDeleted = await prisma.cartItem.delete({
         where: { id: cartItem?.id }
       })
 
-      return 'Producto eliminado.'
+      return CartItemMapper.cartItemEntityFromObject(itemDeleted)
     } catch (error) {
       if (error instanceof CustomError) throw error
       throw error
