@@ -82,19 +82,20 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
       // 1. profileExists
       const profileExists = await prisma.profile.findFirst({
         where: {
-          id
+          user_id: id
         }
       })
       // 2. If not exists throw error
       if (!profileExists) throw CustomError.notFound('El perfil no existe')
       // 3. If exists update profile
       const profileUpdated = await prisma.profile.update({
-        where: { id },
+        where: { user_id: id },
         data: { business_description: businessDescription, avatar, name }
       })
 
       return ProfileMapper.profileEntityFromObject(profileUpdated)
     } catch (error) {
+      console.log(error)
       if (error instanceof CustomError) throw error
 
       throw CustomError.internalServer()

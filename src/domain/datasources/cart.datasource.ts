@@ -1,4 +1,4 @@
-import { CreateCartDto, UpdateProductCartDto } from '@domain/dtos'
+import { CreateCartDto } from '@domain/dtos'
 import { CartEntity, CartItemEntity } from '@domain/entities'
 
 export abstract class CartDataSource {

@@ -13,3 +13,5 @@ export * from '@domain/dtos/user/update-role.dto'
 
 export * from '@domain/dtos/cart/create-cart.dto'
 export * from '@domain/dtos/cart/update-product-cart.dto'
+
+export * from '@domain/dtos/favorite/create-favorite.dto'

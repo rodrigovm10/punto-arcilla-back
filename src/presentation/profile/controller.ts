@@ -27,6 +27,7 @@ export class ProfileController {
   }
 
   createProfile = (req: Request, res: Response) => {
+    console.log(req.body)
     const [error, profileDto] = CreateProfileDto.create(req.body)
 
     if (error) return res.status(400).json({ error })

@@ -26,3 +26,8 @@ export * from '@domain/use-cases/cart/create-cart.use-case'
 export * from '@domain/use-cases/cart/delete-product-from-cart.use-case'
 export * from '@domain/use-cases/cart/clear-cart.use-case'
 export * from '@domain/use-cases/cart/update-product-quantity.use-case'
+
+export * from '@domain/use-cases/order/create-order.use-case'
+
+export * from '@domain/use-cases/favorite/create-favorite.use-case'
+export * from '@domain/use-cases/favorite/get-favorites.use-case'

@@ -72,6 +72,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
   }
 
   async delete(id: string): Promise<string> {
+    console.log(id)
     try {
       const productExists = await prisma.product.findFirst({ where: { id } })
 
@@ -81,6 +82,7 @@ export class ProductDataSourceImpl implements ProductDataSource {
 
       return 'Product deleted succesfully'
     } catch (error) {
+      console.log(error)
       if (error instanceof CustomError) throw error
 
       throw CustomError.internalServer()

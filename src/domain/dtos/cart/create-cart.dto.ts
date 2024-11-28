@@ -6,7 +6,7 @@ export class CreateCartDto {
 
     if (!userId) return ['Missing userId']
     if (!quantity) return ['Missing quantity']
-    if (!productId) return ['Missing userId']
+    if (!productId) return ['Missing productId']
 
     return [undefined, new CreateCartDto(userId, quantity, productId)]
   }
