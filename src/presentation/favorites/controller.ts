@@ -1,7 +1,7 @@
 import { CreateFavoriteDto } from '@domain/dtos'
 import { CustomError } from '@domain/errors'
 import { FavoriteRepository } from '@domain/repositories'
-import { CreateFavorite, GetFavorite } from '@domain/use-cases'
+import { CreateFavorite, DeleteFavorite, GetFavorite } from '@domain/use-cases'
 import { Request, Response } from 'express'
 
 export class FavoriteController {
@@ -33,6 +33,19 @@ export class FavoriteController {
 
     return new GetFavorite(this.favoriteRepository)
       .execute(id)
+      .then(data => res.json(data))
+      .catch(error => this.handleError(error, res))
+  }
+
+  deleteFavorite = (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const productId = req.params.productId
+
+    if (!userId) return res.status(400).json('No hay id de usuario')
+    if (!productId) return res.status(400).json('No hay id de producto')
+
+    return new DeleteFavorite(this.favoriteRepository)
+      .execute(userId, productId)
       .then(data => res.json(data))
       .catch(error => this.handleError(error, res))
   }

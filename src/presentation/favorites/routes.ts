@@ -14,6 +14,7 @@ export class FavoriteRoutes {
 
     router.post('/', AuthMiddleware.validateJWT, controller.createFavorite)
     router.get('/:id', AuthMiddleware.validateJWT, controller.getFavorite)
+    router.delete('/:userId/item/:productId', AuthMiddleware.validateJWT, controller.deleteFavorite)
     return router
   }
 }

@@ -31,3 +31,4 @@ export * from '@domain/use-cases/order/create-order.use-case'
 
 export * from '@domain/use-cases/favorite/create-favorite.use-case'
 export * from '@domain/use-cases/favorite/get-favorites.use-case'
+export * from '@domain/use-cases/favorite/delete-favorite.use-case'

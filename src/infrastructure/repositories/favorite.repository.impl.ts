@@ -12,4 +12,8 @@ export class FavoriteRepositoryImpl implements FavoriteRepository {
   getFavorites(userId: string): Promise<FavoriteEntity[]> {
     return this.favoriteDatasource.getFavorites(userId)
   }
+
+  deleteProduct(userId: string, productId: string): Promise<FavoriteEntity[]> {
+    return this.favoriteDatasource.deleteProduct(userId, productId)
+  }
 }
