@@ -8,6 +8,7 @@ import { AddressRoutes } from '@presentation/address/routes'
 import { CartRoutes } from '@presentation/cart/routes'
 import { OrderRoutes } from '@presentation/order/routes'
 import { FavoriteRoutes } from './favorites/routes'
+import { ReservedRoutes } from './reserved/routes'
 
 export class AppRoutes {
   static get routes(): Router {
@@ -21,6 +22,7 @@ export class AppRoutes {
     router.use('/api/cart', CartRoutes.routes)
     router.use('/api/order', OrderRoutes.routes)
     router.use('/api/favorite', FavoriteRoutes.routes)
+    router.use('/api/reserved', ReservedRoutes.routes)
 
     return router
   }

@@ -26,6 +26,12 @@ enum Status {
   CANCELD
 }
 
+enum ReservedStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model User {
   id                      String @id @default(cuid())
   email                   String @unique
@@ -40,6 +46,8 @@ model User {
   cart                    Cart?
   order                   Order[]
   favorites               Favorite[]
+  reservedAsCustomer      Reserved[] @relation("CustomerRelation")
+  reservedAsRecipient     Reserved[] @relation("RecipientRelation")
 
   @@map("users")
 }
@@ -84,7 +92,10 @@ model Product {
   created_at              DateTime @default(now())
   cart_items              CartItem[]
   favorites               ProductsOnFavorites[]
-
+  reserved                Reserved[]
+  can_be_reserved         Boolean @default(false)
+  percentage_reservation  Decimal? @default(0.0)
+  
   user User @relation(fields: [user_id], references: [id])
 
   @@map("products")
@@ -111,7 +122,6 @@ model CartItem{
   product                 Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
   cart                    Cart    @relation(fields: [cart_id], references: [id]) 
   
-
   @@map("cart_items")
 }
 
@@ -138,6 +148,21 @@ model Favorite {
   user                    User @relation(fields: [user_id], references: [id])
 
   @@map("favorites")
+}
+
+model Reserved {
+  id             String          @id @default(cuid())
+  product_id     String
+  customer_id    String
+  recipient_id   String
+  status         ReservedStatus  @default(PENDING)
+
+  product        Product         @relation(fields: [product_id], references: [id])
+  customer       User            @relation("CustomerRelation", fields: [customer_id], references: [id], onDelete: Cascade)
+  recipient      User            @relation("RecipientRelation", fields: [recipient_id], references: [id], onDelete: Cascade)
+
+  @@map("reserved")
+  @@unique([product_id, customer_id]) 
 }
 
 model ProductsOnFavorites{

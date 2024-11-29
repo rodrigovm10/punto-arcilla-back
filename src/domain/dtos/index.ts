@@ -15,3 +15,5 @@ export * from '@domain/dtos/cart/create-cart.dto'
 export * from '@domain/dtos/cart/update-product-cart.dto'
 
 export * from '@domain/dtos/favorite/create-favorite.dto'
+
+export * from '@domain/dtos/reserved/create-reserved.dto'
