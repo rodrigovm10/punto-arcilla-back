@@ -30,6 +30,7 @@ enum ReservedStatus {
   PENDING
   ACCEPTED
   REJECTED
+  CANCELED
 }
 
 model User {

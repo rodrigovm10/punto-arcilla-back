@@ -9,7 +9,6 @@ import {
   UpdateReservedStatus
 } from '@domain/use-cases'
 import { Request, Response } from 'express'
-import { rmSync } from 'fs'
 
 export class ReservedController {
   constructor(private readonly reservedRepository: ReservedRepository) {}
@@ -41,7 +40,7 @@ export class ReservedController {
     new GetCustomerReserved(this.reservedRepository)
       .execute(customerId)
       .then(data => res.json(data))
-      .then(error => this.handleError(error, res))
+      .catch(error => this.handleError(error, res))
   }
 
   getRecipientReserved = (req: Request, res: Response) => {
